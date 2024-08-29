@@ -60,21 +60,7 @@ const dataAtual = new Date();
 
         const dataFormatada = `${dia}/${mes}/${ano}`; // Formato dd/mm/yyyy
         document.getElementById('data-atual').innerText = dataFormatada;
-    function fetchData() {
-        fetch('get_data.php')
-            .then(response => response.json())
-            .then(data => {
-                if (!data.error) {
-                    document.getElementById('ph').textContent = `pH: ${data.ph}`;
-                    document.getElementById('cloro').textContent = `Cloro: ${data.cloro}`;
-                    document.getElementById('alcalinidade').textContent = `Alcalinidade: ${data.alcalinidade}`;
-                    document.getElementById('timestamp').textContent = `Última atualização: ${data.created_at}`;
-                } else {
-                    console.error('Nenhum dado encontrado.');
-                }
-            })
-            .catch(error => console.error('Erro ao buscar dados:', error));
-    }
+    
 
     // Atualiza a cada 10 segundos
     setInterval(fetchData, 10000);
