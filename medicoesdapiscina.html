@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medições da Piscina</title>
+    <style>
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #c2ddf5;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #e9e9e9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .measurement {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+        .timestamp {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Medições da Piscina</h2>
+    <div class="measurement" id="cliente">Cliente: Orlando</div>
+    <div class="measurement" id="ph">pH: 7.4 --</div>
+    <div class="measurement" id="cloro">Cloro: 4ppm--</div>
+    <div class="measurement" id="alcalinidade">Alcalinidade: 40ppm --</div>
+    <div class="timestamp" id="data-atual">Última atualização: </div>
+       
+</div>
+
+<script>
+    // script para obter e exibir a data atual
+   
+// JavaScript para obter e exibir a data atual
+const dataAtual = new Date();
+        const dia = dataAtual.getDate().toString().padStart(2, '0'); // Dia com dois dígitos
+        const mes = (dataAtual.getMonth() + 1).toString().padStart(2, '0'); // Mês com dois dígitos
+        const ano = dataAtual.getFullYear();
+
+        const dataFormatada = `${dia}/${mes}/${ano}`; // Formato dd/mm/yyyy
+        document.getElementById('data-atual').innerText = dataFormatada;
+    function fetchData() {
+        fetch('get_data.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.error) {
+                    document.getElementById('ph').textContent = `pH: ${data.ph}`;
+                    document.getElementById('cloro').textContent = `Cloro: ${data.cloro}`;
+                    document.getElementById('alcalinidade').textContent = `Alcalinidade: ${data.alcalinidade}`;
+                    document.getElementById('timestamp').textContent = `Última atualização: ${data.created_at}`;
+                } else {
+                    console.error('Nenhum dado encontrado.');
+                }
+            })
+            .catch(error => console.error('Erro ao buscar dados:', error));
+    }
+
+    // Atualiza a cada 10 segundos
+    setInterval(fetchData, 10000);
+
+    // Busca os dados imediatamente ao carregar a página
+    fetchData();
+</script>
+
+</body>
+</html>
